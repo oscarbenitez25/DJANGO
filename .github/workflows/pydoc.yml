@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main", "master" ]
 
-# Afegim permisos explícits perquè l'Action pugui escriure a la branca gh-pages
+# Permisos necessaris perquè l'Action pugui crear la branca gh-pages i pujar els fitxers
 permissions:
   contents: write
 
@@ -29,23 +29,25 @@ jobs:
       - name: Generar documentació Pydoc
         run: |
           mkdir -p docs
-          # Definim el PYTHONPATH perquè Pydoc trobi la teva app 'blog' i la configuració de Django
-          export PYTHONPATH=$PYTHONPATH:$(pwd)
           
-          # Generem els HTML
+          # Configurem les rutes perquè Pydoc i Django sàpiguen on és cada mòdul
+          export PYTHONPATH=$PYTHONPATH:$(pwd)
+          export DJANGO_SETTINGS_MODULE=my_site.settings
+          
+          # Generem els fitxers HTML utilitzant Pydoc
           python -m pydoc -w blog.models
           python -m pydoc -w blog.views
           python -m pydoc -w blog.urls
           python -m pydoc -w blog.admin
           
-          # Movem els HTML generats a la carpeta docs
+          # Movem tots els HTML generats a la carpeta docs
           mv blog.models.html blog.views.html blog.urls.html blog.admin.html docs/
           
-          # Creem un index.html (per exemple, copiant el de models) perquè GitHub Pages sàpiga quina és la pàgina d'inici
+          # Creem el fitxer index.html (duplicant el de models) perquè GitHub Pages tingui una pàgina d'inici
           cp docs/blog.models.html docs/index.html
 
       - name: Pujar documentació a GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4 # Actualitzat a la versió v4 (més estable)
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs
