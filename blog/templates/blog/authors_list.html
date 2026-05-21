@@ -1,0 +1,34 @@
+{% extends "blog/base.html" %}
+
+{% block title %}Autors — Django Blog{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">👥 Autors</h1>
+
+{% if authors %}
+    <div class="row g-4">
+        {% for author in authors %}
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="display-1 mb-3">👤</div>
+                        <h4 class="card-title">{{ author }}</h4>
+                        <p class="text-muted">
+                            ✉️ <a href="mailto:{{ author.email }}">{{ author.email }}</a>
+                        </p>
+                        <p class="text-muted small">
+                            📝 {{ author.posts.count }} post{% if author.posts.count != 1 %}s{% endif %}
+                        </p>
+                        <a href="{% url 'author_detail' author.id %}"
+                           class="btn btn-primary">
+                            Veure perfil →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info">Encara no hi ha autors registrats.</div>
+{% endif %}
+{% endblock %}

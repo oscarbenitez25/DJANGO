@@ -1,0 +1,21 @@
+{% extends "blog/base.html" %}
+
+{% block title %}Tots els Posts — Django Blog{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">📚 Tots els Posts</h1>
+
+{% if posts %}
+    <div class="row g-4">
+        {% for post in posts %}
+            <div class="col-md-4 col-lg-3">
+                {% include "blog/includes/post.html" %}
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info">
+        Encara no hi ha posts publicats.
+    </div>
+{% endif %}
+{% endblock %}

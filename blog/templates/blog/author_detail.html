@@ -1,0 +1,42 @@
+{% extends "blog/base.html" %}
+
+{% block title %}{{ author }} — Django Blog{% endblock %}
+
+{% block content %}
+<!-- Capçalera autor -->
+<div class="card mb-5 shadow-sm">
+    <div class="card-body text-center py-4">
+        <div class="display-1 mb-3">👤</div>
+        <h1 class="card-title h2">{{ author }}</h1>
+        <p class="text-muted fs-5">
+            ✉️ <a href="mailto:{{ author.email }}">{{ author.email }}</a>
+        </p>
+        <span class="badge bg-primary fs-6">
+            {{ posts.count }} post{% if posts.count != 1 %}s{% endif %} publicats
+        </span>
+    </div>
+</div>
+
+<!-- Posts de l'autor -->
+<h2 class="mb-4">Posts de {{ author.first_name }}</h2>
+
+{% if posts %}
+    <div class="row g-4">
+        {% for post in posts %}
+            <div class="col-md-4">
+                {% include "blog/includes/post.html" %}
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info">
+        Aquest autor encara no té posts publicats.
+    </div>
+{% endif %}
+
+<div class="mt-4">
+    <a href="{% url 'authors' %}" class="btn btn-outline-secondary">
+        ← Tots els autors
+    </a>
+</div>
+{% endblock %}

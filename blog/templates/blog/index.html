@@ -1,0 +1,43 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block title %}Inici — Django Blog{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<div class="p-5 mb-4 bg-dark text-white rounded-3">
+    <div class="container-fluid py-3">
+        <h1 class="display-5 fw-bold">Benvingut al Django Blog</h1>
+        <p class="col-md-8 fs-4">
+            Descobreix els nostres últims articles sobre tecnologia, programació i molt més.
+        </p>
+        <a href="{% url 'posts' %}" class="btn btn-primary btn-lg">
+            Veure tots els posts →
+        </a>
+    </div>
+</div>
+
+<!-- Darrers posts -->
+<h2 class="mb-4">🕐 Darrers Posts</h2>
+
+{% if posts %}
+    <div class="row g-4">
+        {% for post in posts %}
+            <div class="col-md-4">
+                {% include "blog/includes/post.html" %}
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info">
+        Encara no hi ha posts publicats.
+        <a href="/admin/blog/post/add/" class="alert-link">Afegeix-ne un des de l'admin.</a>
+    </div>
+{% endif %}
+
+<div class="text-center mt-5">
+    <a href="{% url 'posts' %}" class="btn btn-outline-primary btn-lg">
+        Veure tots els posts
+    </a>
+</div>
+{% endblock %}

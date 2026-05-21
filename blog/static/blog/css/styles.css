@@ -1,0 +1,51 @@
+/* Django Blog — Estils personalitzats */
+
+body {
+    font-family: "Segoe UI", system-ui, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Navbar */
+.navbar-brand {
+    font-size: 1.4rem;
+    letter-spacing: 0.5px;
+}
+
+/* Cards */
+.card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Post content */
+.post-content {
+    line-height: 1.9;
+}
+
+.post-content p {
+    margin-bottom: 1.2rem;
+}
+
+/* Hero section */
+.bg-dark.rounded-3 {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%) !important;
+}
+
+/* Footer */
+footer a {
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+footer a:hover {
+    color: white !important;
+}
+
+/* Badges */
+.badge {
+    font-weight: 500;
+}
