@@ -4,9 +4,11 @@ on:
   push:
     branches: [ "main", "master" ]
 
-# Permisos necessaris perquè l'Action pugui crear la branca gh-pages i pujar els fitxers
+# Permisos totals perquè l'Action pugui crear la branca gh-pages i gestionar GitHub Pages
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
   docs:
