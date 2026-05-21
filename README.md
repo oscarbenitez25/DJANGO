@@ -172,3 +172,7 @@ Accedeix a `/admin/` amb el superusuari per:
 - Afegir, editar i eliminar posts
 - Gestionar autors i tags
 - Visualitzar les relacions entre models
+
+## 📚 Documentació
+
+[Veure documentació dels mòduls](https://oscarbenitez25.github.io/DJANGO/)
