@@ -1,0 +1,37 @@
+name: Generate Pydoc Documentation
+
+on:
+  push:
+    branches: [ "main", "master" ]
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar repositori
+        uses: actions/checkout@v4
+
+      - name: Instal·lar Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instal·lar dependències
+        run: |
+          pip install -r requirements.txt
+
+      - name: Generar documentació Pydoc
+        run: |
+          mkdir -p docs
+          python -m pydoc -w blog.models
+          python -m pydoc -w blog.views
+          python -m pydoc -w blog.urls
+          python -m pydoc -w blog.admin
+          mv blog.models.html blog.views.html blog.urls.html blog.admin.html docs/
+
+      - name: Pujar documentació a GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
