@@ -29,12 +29,12 @@ jobs:
           pip install -r requirements.txt
 
       - name: Generar documentació Pydoc
+        # Injectem les variables d'entorn de manera nativa al sistema de GitHub
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+          DJANGO_SETTINGS_MODULE: my_site.settings
         run: |
           mkdir -p docs
-          
-          # Configurem les rutes perquè Pydoc i Django sàpiguen on és cada mòdul
-          export PYTHONPATH=$PYTHONPATH:$(pwd)
-          export DJANGO_SETTINGS_MODULE=my_site.settings
           
           # Generem els fitxers HTML utilitzant Pydoc
           python -m pydoc -w blog.models
@@ -45,7 +45,7 @@ jobs:
           # Movem tots els HTML generats a la carpeta docs
           mv blog.models.html blog.views.html blog.urls.html blog.admin.html docs/
           
-          # Creem el fitxer index.html (duplicant el de models) perquè GitHub Pages tingui una pàgina d'inici
+          # Creem el fitxer index.html perquè GitHub Pages tingui una pàgina d'inici
           cp docs/blog.models.html docs/index.html
 
       - name: Pujar documentació a GitHub Pages
