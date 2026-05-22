@@ -1,51 +1,57 @@
 name: Generate Pydoc Documentation
-
 on:
   push:
     branches: [ "main", "master" ]
-
 # Permisos totals perquè l'Action pugui crear la branca gh-pages i gestionar GitHub Pages
 permissions:
   contents: write
   pages: write
   id-token: write
-
 jobs:
   docs:
     runs-on: ubuntu-latest
-
     steps:
       - name: Clonar repositori
         uses: actions/checkout@v4
-
       - name: Instal·lar Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-
       - name: Instal·lar dependències
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-
       - name: Generar documentació Pydoc
         env:
           DJANGO_SETTINGS_MODULE: my_site.settings
         run: |
           mkdir -p docs
-          
+
           # Afegim el camí de treball actual al sistema de cerca de Python
           export PYTHONPATH=$PYTHONPATH:$(pwd)
-          
+
           # Executem un petit script que inicialitza Django abans de cridar Pydoc per evitar errors d'importació
           python -c "import django; django.setup(); import pydoc; pydoc.writedoc('blog.models'); pydoc.writedoc('blog.views'); pydoc.writedoc('blog.urls'); pydoc.writedoc('blog.admin')"
-          
+
           # Movem tots els HTML generats a la carpeta docs
           mv blog.models.html blog.views.html blog.urls.html blog.admin.html docs/
-          
-          # Creem el fitxer index.html perquè GitHub Pages tingui una pàgina d'inici
-          cp docs/blog.models.html docs/index.html
 
+          # Creem un index.html amb links a tots els mòduls
+          cat > docs/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="ca">
+          <head><meta charset="UTF-8"><title>Documentació Django Blog</title>
+          <style>body{font-family:sans-serif;max-width:600px;margin:40px auto;padding:0 20px}
+          a{display:block;margin:10px 0;font-size:1.1em}</style></head>
+          <body>
+          <h1>📚 Documentació Django Blog</h1>
+          <p>Documentació generada automàticament amb Pydoc.</p>
+          <a href="blog.models.html">📦 blog.models</a>
+          <a href="blog.views.html">👁️ blog.views</a>
+          <a href="blog.urls.html">🔗 blog.urls</a>
+          <a href="blog.admin.html">⚙️ blog.admin</a>
+          </body></html>
+          EOF
       - name: Pujar documentació a GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
